@@ -7,7 +7,7 @@ LD=g++
 
 main: main.o
 	$(LD) $(LDFLAGS) main.o $(LDLIBS) -o main
-	
+
 libfunctions.a: functions.o
 	ar rcs libfunctions.a functions.o
 
