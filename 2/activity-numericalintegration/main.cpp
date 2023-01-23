@@ -2,9 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <chrono>
-
-
-
+using namespace std::chrono;
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -21,10 +19,12 @@ float f4(float x, int intensity);
   
 int main (int argc, char* argv[]) {
   int functionID = std::stof(argv[1]);
-  float a = std::stof(argv[2]);
-  float b = std::stof(argv[3]);
-  float n = std::stof(argv[4]);
+  double a = std::stof(argv[2]);
+  double b = std::stof(argv[3]);
+  double n = std::stof(argv[4]);
   int intensity = std::stof(argv[5]);
+
+
 
   for (int i = 0; i < argc; ++i){
     std::cout << argv[i] << "\n";
@@ -33,12 +33,14 @@ int main (int argc, char* argv[]) {
 
   if (functionID == 1)
   {
-    float subtract = b-a;
+    double subtract = b-a;
+    
     float deltax = subtract/ n;
 
-    double halfAnswer =  f1(deltax,  intensity);
-    double answer = halfAnswer * deltax;
-    return answer;
+    double variableF =  f1(deltax,  intensity);
+    double answer = variableF * deltax;
+    std::cout << std::chrono::duration<double>(answer).count();
+    // std::cout << chrono<< "\n";
 
   }
   else if (functionID == 2)
