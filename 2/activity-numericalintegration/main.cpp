@@ -33,11 +33,9 @@ int main (int argc, char* argv[]) {
     auto start = std::chrono::system_clock::now();
     double subtract = b-a;
     float deltax = subtract/ n;
-
     float  variableF;
     float variableX = 0;
     float answer = 0;
-
     for (int  i = 0; i < n; i++)
     {
       variableX = a + (i+ .5) * deltax;
@@ -50,54 +48,74 @@ int main (int argc, char* argv[]) {
     auto end = std::chrono::system_clock::now();    
     auto elapsed = end - start;                 // difference is a "duration"
     std::cerr <<elapsed.count();  // clock ticks (seconds)
-    // std::cout <<"" << "\n";
-
-    // std::cout <<"subtract: " << subtract << "\n";
-    // std::cout <<"delta: " << deltax << "\n";
-    // std::cout <<"a: " << a << "\n";
-    // std::cout <<"b: " << b << "\n";
-    // std::cout <<"This is n:------------- " << n << "\n";
-    // std::cout <<"variableF: " << variableF << "\n";
-    // std::cout <<"answer: " << answer << "\n";
-    // std::cout <<"Delta X: " << deltax << "\n";
-    //std::cout << std::chrono::duration<double>(answer).count();
+  
 
   }
   else if (functionID == 2)
-  {
+   {
+    auto start = std::chrono::system_clock::now();
     double subtract = b-a;
-    
     float deltax = subtract/ n;
+    float  variableF;
+    float variableX = 0;
+    float answer = 0;
+    for (int  i = 0; i < n; i++)
+    {
+      variableX = a + (i+ .5) * deltax;
+      variableF = f2(variableX, intensity);
+      answer = variableF + answer;
+    }
+    answer = answer * deltax;
+    
+    std::cout <<answer;
+    auto end = std::chrono::system_clock::now();    
+    auto elapsed = end - start;                 // difference is a "duration"
+    std::cerr <<elapsed.count();  // clock ticks (seconds)
 
-    double variableF =  f2(deltax,  intensity);
-
-
-
-
-
-    double answer = variableF * deltax;
-    std::cout << std::chrono::duration<double>(answer).count(); //this is wrong
   }
   else if (functionID == 3)
-  {
+   {
+    auto start = std::chrono::system_clock::now();
     double subtract = b-a;
-    
     float deltax = subtract/ n;
-
-    double variableF =  f3(deltax,  intensity);
-    double answer = variableF * deltax;
-
-    std::cout << std::chrono::duration<double>(answer).count();
+    float  variableF;
+    float variableX = 0;
+    float answer = 0;
+    for (int  i = 0; i < n; i++)
+    {
+      variableX = a + (i+ .5) * deltax;
+      variableF = f3(variableX, intensity);
+      answer = variableF + answer;
+    }
+    answer = answer * deltax;
+    
+    std::cout <<answer;
+    auto end = std::chrono::system_clock::now();    
+    auto elapsed = end - start;                 // difference is a "duration"
+    std::cerr <<elapsed.count();  // clock ticks (seconds)
+    
   }
-  else if (functionID == 5)
-  {
+  else if (functionID == 4)
+   {
+    auto start = std::chrono::system_clock::now();
     double subtract = b-a;
-    
     float deltax = subtract/ n;
-
-    double variableF =  f4(deltax,  intensity);
-    double answer = variableF * deltax;
-    std::cout << std::chrono::duration<double>(answer).count();
+    float  variableF;
+    float variableX = 0;
+    float answer = 0;
+    for (int  i = 0; i < n; i++)
+    {
+      variableX = a + (i+ .5) * deltax;
+      variableF = f4(variableX, intensity);
+      answer = variableF + answer;
+    }
+    answer = answer * deltax;
+    
+    std::cout <<answer;
+    auto end = std::chrono::system_clock::now();    
+    auto elapsed = end - start;                 // difference is a "duration"
+    std::cerr <<elapsed.count();  // clock ticks (seconds)
+   
   }
   else {
     std::cout<<"this is the else clause indicating that functionID was not 1-5";
