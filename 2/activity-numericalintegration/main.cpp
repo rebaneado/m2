@@ -31,19 +31,35 @@ int main (int argc, char* argv[]) {
   if (functionID == 1)
   {
     auto start = std::chrono::system_clock::now();
-
     double subtract = b-a;
-    
     float deltax = subtract/ n;
 
-    double variableF =  f1(deltax,  intensity);
-    double answer = variableF * deltax;
+    float  variableF;
+    float variableX = 0;
+    float answer = 0;
+
+    for (int  i = 0; i < n; i++)
+    {
+      variableX = a + (i+ .5) * deltax;
+      variableF = f1(variableX, intensity);
+      answer = variableF + answer;
+    }
+    answer = answer * deltax;
+    
     std::cout <<answer;
     auto end = std::chrono::system_clock::now();    
     auto elapsed = end - start;                 // difference is a "duration"
     std::cerr <<elapsed.count();  // clock ticks (seconds)
+    // std::cout <<"" << "\n";
 
-
+    // std::cout <<"subtract: " << subtract << "\n";
+    // std::cout <<"delta: " << deltax << "\n";
+    // std::cout <<"a: " << a << "\n";
+    // std::cout <<"b: " << b << "\n";
+    // std::cout <<"This is n:------------- " << n << "\n";
+    // std::cout <<"variableF: " << variableF << "\n";
+    // std::cout <<"answer: " << answer << "\n";
+    // std::cout <<"Delta X: " << deltax << "\n";
     //std::cout << std::chrono::duration<double>(answer).count();
 
   }
@@ -54,8 +70,13 @@ int main (int argc, char* argv[]) {
     float deltax = subtract/ n;
 
     double variableF =  f2(deltax,  intensity);
+
+
+
+
+
     double answer = variableF * deltax;
-    std::cout << std::chrono::duration<double>(answer).count();
+    std::cout << std::chrono::duration<double>(answer).count(); //this is wrong
   }
   else if (functionID == 3)
   {
