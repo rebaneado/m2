@@ -60,7 +60,7 @@ int main (int argc, char* argv[]) {
     double answer = variableF * deltax;
     std::cout << std::chrono::duration<double>(answer).count();
   }
-  else if (functionID == 5)ß
+  else if (functionID == 5)
   {
     double subtract = b-a;
     
