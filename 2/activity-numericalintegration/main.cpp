@@ -2,7 +2,6 @@
 #include <cmath>
 #include <cstdlib>
 #include <chrono>
-using namespace std::chrono;
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -31,13 +30,21 @@ int main (int argc, char* argv[]) {
 
   if (functionID == 1)
   {
+    auto start = std::chrono::system_clock::now();
+
     double subtract = b-a;
     
     float deltax = subtract/ n;
 
     double variableF =  f1(deltax,  intensity);
     double answer = variableF * deltax;
-    std::cout << std::chrono::duration<double>(answer).count();
+    std::cout <<answer;
+    auto end = std::chrono::system_clock::now();    
+    auto elapsed = end - start;                 // difference is a "duration"
+    std::cerr <<elapsed.count();  // clock ticks (seconds)
+
+
+    //std::cout << std::chrono::duration<double>(answer).count();
 
   }
   else if (functionID == 2)
@@ -58,6 +65,7 @@ int main (int argc, char* argv[]) {
 
     double variableF =  f3(deltax,  intensity);
     double answer = variableF * deltax;
+
     std::cout << std::chrono::duration<double>(answer).count();
   }
   else if (functionID == 5)
