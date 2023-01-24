@@ -24,11 +24,9 @@ int main (int argc, char* argv[]) {
   double n = std::stof(argv[4]);
   int intensity = std::stof(argv[5]);
 
-
-
-  for (int i = 0; i < argc; ++i){
-    std::cout << argv[i] << "\n";
-  }
+  // for (int i = 0; i < argc; ++i){
+  //   std::cout << argv[i] << "\n";
+  // }
 
 
   if (functionID == 1)
@@ -40,27 +38,44 @@ int main (int argc, char* argv[]) {
     double variableF =  f1(deltax,  intensity);
     double answer = variableF * deltax;
     std::cout << std::chrono::duration<double>(answer).count();
-    // std::cout << chrono<< "\n";
 
   }
   else if (functionID == 2)
   {
-    /* code */
+    double subtract = b-a;
+    
+    float deltax = subtract/ n;
+
+    double variableF =  f2(deltax,  intensity);
+    double answer = variableF * deltax;
+    std::cout << std::chrono::duration<double>(answer).count();
   }
   else if (functionID == 3)
   {
-    /* code */
+    double subtract = b-a;
+    
+    float deltax = subtract/ n;
+
+    double variableF =  f3(deltax,  intensity);
+    double answer = variableF * deltax;
+    std::cout << std::chrono::duration<double>(answer).count();
   }
-  else if (functionID == 5)
+  else if (functionID == 5)ß
   {
-    /* code */
+    double subtract = b-a;
+    
+    float deltax = subtract/ n;
+
+    double variableF =  f4(deltax,  intensity);
+    double answer = variableF * deltax;
+    std::cout << std::chrono::duration<double>(answer).count();
   }
   else {
     std::cout<<"this is the else clause indicating that functionID was not 1-5";
   }
 
 // tells me how many paramedtes i have to
-  if (argc <= 6) {
+  if (argc < 6) {
     std::cout<<"usage: "<<argv[0]<<" <functionid> <a> <b> <n> <intensity>"<<std::endl;
     return -1;
   }
