@@ -2,6 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <thread>
+
 
 #include "Dictionary.cpp"
 #include "MyHashtable.cpp"
@@ -49,6 +51,9 @@ std::vector<std::vector<std::string>> tokenizeLyrics(const std::vector<std::stri
 
 int main(int argc, char **argv)
 {
+
+  std::vector<std::thread> mythreads;//created a Vector for threads
+
   if (argc < 4) {
     std::cerr<<"usage: ./main <sources> <testword> <threshold>"<<std::endl;
     return -1;
@@ -76,12 +81,32 @@ int main(int argc, char **argv)
 
 
   // write code here
+  auto start =std::chrono::steady_clock::now();
 
 
 
+ 
+  int sizeOfFiles = files.size();
+ 
+  // for (auto & filecontent: wordmap) {
+  //     for (auto & w : filecontent) {
+  //       int count = dict.get(w);
+  //       ++count;
+  //       dict.set(w, count);
+  //     }
+  //   }
 
+for (int i = 0; i < sizeOfFiles; i++)
+{
 
+ std::cout<<files[i]<<"\n";
 
+  // String currentFileName = files[i];
+  
+  // std::thread mythread(f,i);
+ //mythreads.push_back(std::move(mythread));
+
+}
 
 
 
@@ -98,4 +123,9 @@ int main(int argc, char **argv)
   std::cout << ht.get(testWord) << std::endl;
 
   return 0;
+}
+
+
+void f (int number){
+  std::cout <<"Hello! I am Minion: "<<number<<"\n";
 }

@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/alexmolina/Linux/m2/4/activity-hashtable-coarse/sequential",
+      "program": "/Users/alexmolina/Linux/m2/4/activity-hashtable-coarse/sequential/build/Debug/outDebug"
+    }
+  ]
+}
