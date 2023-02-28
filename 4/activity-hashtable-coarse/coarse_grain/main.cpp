@@ -5,16 +5,13 @@
 #include <thread>
 #include <mutex>
 #include <iostream>
-
-
 #include "Dictionary.cpp"
 #include "MyHashtable.cpp"
-//using namespace std; 
 
 //Tokenize a string into individual word, removing punctuation at the
 //end of words
-std::vector<std::vector<std::string>> tokenizeLyrics(const std::vector<std::string> files) {
-  std::vector<std::vector<std::string>> ret;
+std::vector<std::vector<std::string> > tokenizeLyrics(const std::vector<std::string> files) {
+  std::vector<std::vector<std::string> > ret;
 
   for(auto filename : files) {
     //std::cout<<"reading "<<filename<<"\n";
@@ -70,7 +67,6 @@ void function(std::vector<std::string> filecontent,std::mutex& mut,Dictionary<st
 
 int main(int argc, char **argv)
 {
-
   std::vector<std::thread> mythreads;//created a Vector for threads
 
   if (argc < 4) {
@@ -110,48 +106,21 @@ int main(int argc, char **argv)
   {
   //std::vector <std::string> filecontent = files[i];
 //thread where i am below passing 1. file @ i, dictionary and mutex
-  threadgroup.push_back (
-  std::thread(function, std::ref (files[i]), std::ref (mut), std::ref (dict)));
+  std::vector<std::thread> threadgroup;
+  threadgroup.push_back (std::thread(function, std::ref (files[i]), std::ref (mut), std::ref (dict)));
   }
 
   for (auto& t: threadgroup){
     t. join();
   }
-
-
-
   auto stop = std::chrono::steady_clock::now();
   std::chrono::duration<double> time_elapsed = stop-start;
 
   
-  // Check Hash Table Values 
-  //(you can uncomment, but this must be commented out for tests)
-  // for (auto it : dict) {
-  //   if (it.second > thresholdCount)
-  //     std::cout << it.first << " " << it.second << std::endl;
-  // }
-  
+
 
   // Do not touch this, need for test cases
-//   std::cout << ht.get(testWord) << std::endl;
+   std::cout << ht.get(testWord) << std::endl;
 
-//   return 0;
-// }
-
-
-
-
- 
- 
- 
- 
-//  4) start a timer just like in the ‘sequential’ code (we’re trying to report speedup)
-//  5) populate the threads by using the outer loop of the for loop mentioned before - and within it, create a thread and call your word counting function in it (with parameters). Use the std::push_back operator, like in ‘minions’.
-//  6) join the threads like you did in ‘minions’
-//  7) end the timer
-//  8) calculate the speedup (again, from the sequential code)
-//  Hope this helped. I’m going to go back through this again tomorrow when I look at fine_grain.
- 
- 
- 
- 
+  return 0;
+}
