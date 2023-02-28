@@ -87,36 +87,27 @@ v.push_back(std::make_unique<std::mutex>());
 std::mutex mut;
 
 
+for (int i = 0; i < sizeOfFiles; i++)
+{    
+ //std::cout<<"THIS NUMBER OF TIMESSSSS "<<i<<" words\n";
 
-for (auto & filecontent: wordmap) {
+  std::thread t1 {[&]() {
+
+    for (auto & filecontent: wordmap) {
     for (auto & w : filecontent) {
+      mut.lock();
       int count = dict.get(w);
       ++count;
       dict.set(w, count);
+      mut.unlock();
     }
+  }//end brack for outter loop 
   }
+  };
 
+  t1.join();
 
-// for (int i = 0; i < sizeOfFiles; i++)
-// {
-  // std::thread t1 {
-  //   [&]() {
-  //   mut.lock();
-
-  //   for (auto & filecontent: wordmap) {
-  //   for (auto & w : filecontent) {
-  //     int count = dict.get(w);
-  //     ++count;
-  //     dict.set(w, count);
-  //   }
-  // }//end brack for outter loop 
-  // mut.unlock();
-  // }
-  // };
-
-  // t1.join();
-
-// }
+}
 
  auto stop = std::chrono::steady_clock::now();
   std::chrono::duration<double> time_elapsed = stop-start;
