@@ -4,9 +4,12 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <iostream>
+
 
 #include "Dictionary.cpp"
 #include "MyHashtable.cpp"
+//using namespace std; 
 
 //Tokenize a string into individual word, removing punctuation at the
 //end of words
@@ -46,6 +49,25 @@ std::vector<std::vector<std::string>> tokenizeLyrics(const std::vector<std::stri
   }
   return ret;
 }
+//file ccontexnt is list of files
+
+void function(std::vector<std::string> filecontent,std::mutex& mut,Dictionary<std::string, int>& dict ){
+
+  auto wordmap = tokenizeLyrics(filecontent);
+
+    for (auto & filecontent: wordmap) {
+        for (auto & w : filecontent) {
+          mut.lock();
+          int count = dict.get(w);
+          ++count;
+          dict.set(w, count);
+          mut.unlock();
+        }
+      }
+    
+}
+
+
 int main(int argc, char **argv)
 {
 
@@ -75,41 +97,30 @@ int main(int argc, char **argv)
   MyHashtable<std::string, int> ht;
   Dictionary<std::string, int>& dict = ht;
 
-  // write code here
-  auto start =std::chrono::steady_clock::now();
 
-  int sizeOfFiles = files.size();
- 
-  
+   // write code here
+   auto start =std::chrono::steady_clock::now();
+
 //below make vector of mutexes
-std::vector<std::unique_ptr<std::mutex>> v;
-v.push_back(std::make_unique<std::mutex>());
-std::mutex mut;
+  std::vector<std::thread> threadgroup;
+  int val = 0;
+  std::mutex mut;
 
-
-for (int i = 0; i < sizeOfFiles; i++)
-{    
- 
-
-  std::thread t1 {[&]() {
-
-    for (auto & filecontent: wordmap) {
-    for (auto & w : filecontent) {
-      mut.lock();
-      int count = dict.get(w);
-      ++count;
-      dict.set(w, count);
-      mut.unlock();
-    }
-  }//end brack for outter loop 
+  for (int i = 0; i < files.size(); i++)
+  {
+  //std::vector <std::string> filecontent = files[i];
+//thread where i am below passing 1. file @ i, dictionary and mutex
+  threadgroup.push_back (
+  std::thread(function, std::ref (files[i]), std::ref (mut), std::ref (dict)));
   }
-  };
 
-  t1.join();
+  for (auto& t: threadgroup){
+    t. join();
+  }
 
-}
 
- auto stop = std::chrono::steady_clock::now();
+
+  auto stop = std::chrono::steady_clock::now();
   std::chrono::duration<double> time_elapsed = stop-start;
 
   
@@ -122,9 +133,25 @@ for (int i = 0; i < sizeOfFiles; i++)
   
 
   // Do not touch this, need for test cases
-  std::cout << ht.get(testWord) << std::endl;
+//   std::cout << ht.get(testWord) << std::endl;
 
-  return 0;
-}
+//   return 0;
+// }
 
 
+
+
+ 
+ 
+ 
+ 
+//  4) start a timer just like in the ‘sequential’ code (we’re trying to report speedup)
+//  5) populate the threads by using the outer loop of the for loop mentioned before - and within it, create a thread and call your word counting function in it (with parameters). Use the std::push_back operator, like in ‘minions’.
+//  6) join the threads like you did in ‘minions’
+//  7) end the timer
+//  8) calculate the speedup (again, from the sequential code)
+//  Hope this helped. I’m going to go back through this again tomorrow when I look at fine_grain.
+ 
+ 
+ 
+ 
