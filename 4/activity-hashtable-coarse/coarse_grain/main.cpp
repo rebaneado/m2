@@ -3,7 +3,7 @@
 #include <sstream>
 #include <vector>
 #include <thread>
-
+#include <mutex>
 
 #include "Dictionary.cpp"
 #include "MyHashtable.cpp"
@@ -46,9 +46,6 @@ std::vector<std::vector<std::string>> tokenizeLyrics(const std::vector<std::stri
   }
   return ret;
 }
-
-
-
 int main(int argc, char **argv)
 {
 
@@ -78,46 +75,50 @@ int main(int argc, char **argv)
   MyHashtable<std::string, int> ht;
   Dictionary<std::string, int>& dict = ht;
 
-
-
   // write code here
   auto start =std::chrono::steady_clock::now();
 
-
-
- 
   int sizeOfFiles = files.size();
  
-  // for (auto & filecontent: wordmap) {
-  //     for (auto & w : filecontent) {
-  //       int count = dict.get(w);
-  //       ++count;
-  //       dict.set(w, count);
-  //     }
-  //   }
+  
+//below make vector of mutexes
+std::vector<std::unique_ptr<std::mutex>> v;
+v.push_back(std::make_unique<std::mutex>());
+std::mutex mut;
+
 
 for (int i = 0; i < sizeOfFiles; i++)
 {
+  std::thread t1 {
+    [&]() {
+    mut.lock();
 
- std::cout<<files[i]<<"\n";
+    for (auto & filecontent: wordmap) {
+    for (auto & w : filecontent) {
+      int count = dict.get(w);
+      ++count;
+      dict.set(w, count);
+    }
+  }//end brack for outter loop 
+  mut.unlock();
+  }
+  };
 
-  // String currentFileName = files[i];
-  
-  // std::thread mythread(f,i);
- //mythreads.push_back(std::move(mythread));
+  t1.join();
 
 }
 
+ auto stop = std::chrono::steady_clock::now();
+  std::chrono::duration<double> time_elapsed = stop-start;
 
-
-  /*
+  
   // Check Hash Table Values 
   //(you can uncomment, but this must be commented out for tests)
-  for (auto it : dict) {
-    if (it.second > thresholdCount)
-      std::cout << it.first << " " << it.second << std::endl;
-  }
-  */
+  // for (auto it : dict) {
+  //   if (it.second > thresholdCount)
+  //     std::cout << it.first << " " << it.second << std::endl;
+  // }
+  
 
   // Do not touch this, need for test cases
   std::cout << ht.get(testWord) << std::endl;
@@ -126,6 +127,3 @@ for (int i = 0; i < sizeOfFiles; i++)
 }
 
 
-void f (int number){
-  std::cout <<"Hello! I am Minion: "<<number<<"\n";
-}

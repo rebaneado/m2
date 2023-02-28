@@ -49,6 +49,9 @@ std::vector<std::vector<std::string>> tokenizeLyrics(const std::vector<std::stri
 
 int main(int argc, char **argv)
 {
+
+  
+
   if (argc < 4) {
     std::cerr<<"usage: ./main <sources> <testword> <threshold>"<<std::endl;
     return -1;
