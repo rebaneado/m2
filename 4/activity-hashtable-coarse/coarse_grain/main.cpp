@@ -89,7 +89,7 @@ std::mutex mut;
 
 for (int i = 0; i < sizeOfFiles; i++)
 {    
- //std::cout<<"THIS NUMBER OF TIMESSSSS "<<i<<" words\n";
+ 
 
   std::thread t1 {[&]() {
 
