@@ -7,6 +7,7 @@
 #include <iostream>
 #include "Dictionary.cpp"
 #include "MyHashtable.cpp"
+ls
 
 //Tokenize a string into individual word, removing punctuation at the
 //end of words
@@ -46,13 +47,8 @@ std::vector<std::vector<std::string> > tokenizeLyrics(const std::vector<std::str
   }
   return ret;
 }
-//file ccontexnt is list of files
 
-void function(std::vector<std::string> filecontent,std::mutex& mut,Dictionary<std::string, int>& dict ){
-
-  auto wordmap = tokenizeLyrics(filecontent);
-
-    for (auto & filecontent: wordmap) {
+void function(std::vector<std::string> &filecontent,std::mutex& mut,MyHashtable<std::string, int>& dict ){
         for (auto & w : filecontent) {
           mut.lock();
           int count = dict.get(w);
@@ -60,7 +56,7 @@ void function(std::vector<std::string> filecontent,std::mutex& mut,Dictionary<st
           dict.set(w, count);
           mut.unlock();
         }
-      }
+      
     
 }
 
@@ -102,13 +98,16 @@ int main(int argc, char **argv)
   int val = 0;
   std::mutex mut;
 
-  for (int i = 0; i < files.size(); i++)
-  {
+  // for (int i = 0; i < files.size(); i++)
+  // {
+  // //std::vector <std::string> filecontent = files[i];
+  // //thread where i am below passing 1. file @ i, dictionary and mutex
+  // threadgroup.push_back (std::thread(function, std::ref (files[i]), std::ref (mut), std::ref (dict)));
+  // }
   //std::vector <std::string> filecontent = files[i];
-//thread where i am below passing 1. file @ i, dictionary and mutex
-  std::vector<std::thread> threadgroup;
+  
+  //thread where i am below passing 1. file @ i, dictionary and mutex
   threadgroup.push_back (std::thread(function, std::ref (files[i]), std::ref (mut), std::ref (dict)));
-  }
 
   for (auto& t: threadgroup){
     t. join();
