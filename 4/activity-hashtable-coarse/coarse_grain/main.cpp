@@ -7,7 +7,7 @@
 #include <iostream>
 #include "Dictionary.cpp"
 #include "MyHashtable.cpp"
-ls
+
 
 //Tokenize a string into individual word, removing punctuation at the
 //end of words
@@ -48,23 +48,22 @@ std::vector<std::vector<std::string> > tokenizeLyrics(const std::vector<std::str
   return ret;
 }
 
-void function(std::vector<std::string> &filecontent,std::mutex& mut,MyHashtable<std::string, int>& dict ){
+
+// }
+void function(std::vector<std::string>& filecontent, MyHashtable<std::string, int>& ht , std::mutex& mut){
         for (auto & w : filecontent) {
           mut.lock();
-          int count = dict.get(w);
+          int count = ht.get(w);
           ++count;
-          dict.set(w, count);
+          ht.set(w, count);
           mut.unlock();
         }
-      
-    
+
 }
 
 
 int main(int argc, char **argv)
 {
-  std::vector<std::thread> mythreads;//created a Vector for threads
-
   if (argc < 4) {
     std::cerr<<"usage: ./main <sources> <testword> <threshold>"<<std::endl;
     return -1;
@@ -98,24 +97,26 @@ int main(int argc, char **argv)
   int val = 0;
   std::mutex mut;
 
-  // for (int i = 0; i < files.size(); i++)
-  // {
-  // //std::vector <std::string> filecontent = files[i];
-  // //thread where i am below passing 1. file @ i, dictionary and mutex
-  // threadgroup.push_back (std::thread(function, std::ref (files[i]), std::ref (mut), std::ref (dict)));
-  // }
-  //std::vector <std::string> filecontent = files[i];
-  
-  //thread where i am below passing 1. file @ i, dictionary and mutex
-  threadgroup.push_back (std::thread(function, std::ref (files[i]), std::ref (mut), std::ref (dict)));
 
-  for (auto& t: threadgroup){
-    t. join();
+  for(int i = 0; i< files.size(); i++){
+    std::thread mythread(function, std::ref (files[i]), std::ref (ht), std::ref (mut));
+    threadgroup.push_back(std::move(mythread));
+
   }
+
+  for (auto & t : threadgroup)
+    {
+      if (t.joinable())
+      {
+        t.join();
+      }
+      else
+        std::cout<<"t is not joinable/n";
+    }
+
+
   auto stop = std::chrono::steady_clock::now();
   std::chrono::duration<double> time_elapsed = stop-start;
-
-  
 
 
   // Do not touch this, need for test cases
