@@ -48,14 +48,13 @@ std::vector<std::vector<std::string> > tokenizeLyrics(const std::vector<std::str
   return ret;
 }
 
-
 void function(std::vector<std::string>& filecontent, Dictionary<std::string, int>& dict, std::mutex& mut ){
         for (auto & w : filecontent) {
-          //mut.lock();
+          mut.lock();
           int count = dict.get(w);
           ++count;
           dict.set(w, count);
-          //mut.unlock();
+          mut.unlock();
         }
 
 }
@@ -87,7 +86,7 @@ int main(int argc, char **argv)
 
 
    // write code here
-  // auto start =std::chrono::steady_clock::now();
+  auto start =std::chrono::steady_clock::now();
 
 //below make vector of mutexes
   std::vector<std::thread> mythreads;
@@ -95,8 +94,8 @@ int main(int argc, char **argv)
   int val = 0;
   std::mutex mut;
 
-//!here is the issue
   for(int i = 0; i< files.size(); i++){
+    
     std::thread mythread(function, std::ref (wordmap[i]), std::ref (dict), std::ref (mut)); //
     mythreads.push_back(std::move(mythread));
 
@@ -112,9 +111,10 @@ int main(int argc, char **argv)
         std::cout<<"t is not joinable/n";
     }
 
-
-  // auto stop = std::chrono::steady_clock::now();
-  // std::chrono::duration<double> time_elapsed = stop-start;
+  
+  auto stop = std::chrono::steady_clock::now();
+  std::chrono::duration<double> time_elapsed = stop-start;
+  std::cerr<<time_elapsed.count()<<std::endl;
 
    
   // Check Hash Table Values 
