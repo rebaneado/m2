@@ -49,7 +49,6 @@ std::vector<std::vector<std::string> > tokenizeLyrics(const std::vector<std::str
 }
 
 
-// }
 void function(std::vector<std::string>& filecontent, MyHashtable<std::string, int>& ht , std::mutex& mut){
         for (auto & w : filecontent) {
           mut.lock();
@@ -60,8 +59,6 @@ void function(std::vector<std::string>& filecontent, MyHashtable<std::string, in
         }
 
 }
-
-
 int main(int argc, char **argv)
 {
   if (argc < 4) {
@@ -99,7 +96,7 @@ int main(int argc, char **argv)
 
 
   for(int i = 0; i< files.size(); i++){
-    std::thread mythread(function, std::ref (files[i]), std::ref (ht), std::ref (mut));
+    std::thread mythread(function, std::ref (wordmap[i]), std::ref (ht), std::ref (mut));
     threadgroup.push_back(std::move(mythread));
 
   }
@@ -118,7 +115,14 @@ int main(int argc, char **argv)
   auto stop = std::chrono::steady_clock::now();
   std::chrono::duration<double> time_elapsed = stop-start;
 
-
+   
+  // Check Hash Table Values 
+  //(you can uncomment, but this must be commented out for tests)
+  for (auto it : dict) {
+    if (it.second > thresholdCount)
+      std::cout << it.first << " " << it.second << std::endl;
+  }
+  
   // Do not touch this, need for test cases
    std::cout << ht.get(testWord) << std::endl;
 
